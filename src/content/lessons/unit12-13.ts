@@ -216,7 +216,7 @@ export const UNIT13_LESSONS: Lesson[] = [
     topics: ["13.1"],
     objectives: ["13.1.A"],
     capability: "Compute $\\Phi_B=\\int \\vec{B}\\cdot d\\vec{A}$ and separate flux from the rate of change of flux.",
-    prereqs: ["u8-flux-definition", "u12-ampere"],
+    prereqs: ["u8-flux-misconception", "u12-ampere"],
     minutes: [18, 26],
     ...review,
     investigationId: "induction",

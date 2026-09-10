@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnanntLogo } from "@/components/layout/Logo";
+import { SiteFooter } from "@/components/layout/SiteFooter";
 import { McqCard } from "@/components/practice/McqCard";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -10,6 +11,7 @@ import { DIAGNOSTIC_ITEMS } from "@/content/items/diagnostic";
 import { DIAGNOSTIC_FRQS } from "@/content/frqs";
 import { useStudent } from "@/lib/store/student-store";
 import { lessonById } from "@/content/lessons";
+import { redirectToGate } from "@/lib/gate-client";
 
 export default function DiagnosticPage() {
   const router = useRouter();
@@ -32,11 +34,44 @@ export default function DiagnosticPage() {
 
   if (!state.profile) {
     return (
-      <div className="p-8">
-        <p>Complete onboarding first.</p>
+      <div className="flex min-h-dvh flex-col bg-background">
+        <header className="border-b border-border bg-navy px-4 py-4">
+          <AnanntLogo inverse />
+        </header>
+        <div className="mx-auto w-full max-w-2xl flex-1 p-8">
+        <p className="text-sm text-muted-foreground">
+          Diagnostic start is public. No account. Submitting sends you to study.anannt.ae/start.
+        </p>
         <Button className="mt-3" onClick={() => router.push("/onboarding")}>
-          Onboarding
+          Optional onboarding first
         </Button>
+        <Button
+          variant="outline"
+          className="mt-3 ml-2"
+          onClick={() =>
+            setState((s) => ({
+              ...s,
+              profile: {
+                name: "Student",
+                examYear: 2027,
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                weeklyHours: 6,
+                priorPhysics: "not stated",
+                priorCalculus: "not stated",
+                schoolSequence: "Not stated",
+                accessibility: { reducedMotion: false, largeText: false, extraTime: false },
+                pathway: "16-week",
+                onboardingComplete: false,
+                diagnosticComplete: false,
+                createdAt: Date.now(),
+              },
+            }))
+          }
+        >
+          Start diagnostic now
+        </Button>
+        </div>
+        <SiteFooter />
       </div>
     );
   }
@@ -66,10 +101,11 @@ export default function DiagnosticPage() {
     }));
     log({ type: "diagnostic_completed", assisted: false, notes: text });
     setDone(true);
+    redirectToGate("8", "1:1");
   }
 
   return (
-    <div className="min-h-dvh bg-background">
+    <div className="flex min-h-dvh flex-col bg-background">
       <header className="border-b border-border bg-navy px-4 py-4">
         <AnanntLogo inverse />
       </header>
@@ -82,7 +118,8 @@ export default function DiagnosticPage() {
         {done ? (
           <div className="space-y-4">
             <p className="text-sm leading-relaxed">{summary}</p>
-            <Button onClick={() => router.push("/plan")}>Open my plan</Button>
+            <p className="text-sm text-muted-foreground">Opening the Burjuman gate — parent WhatsApp is required there.</p>
+            <Button onClick={() => redirectToGate("8", "1:1")}>Continue to the study gate</Button>
             {lessonById("u8-flux-misconception") ? (
               <Button variant="outline" onClick={() => router.push("/learn/zero-flux-is-not-zero-field")}>
                 Sample path: zero flux is not zero field
@@ -146,9 +183,8 @@ export default function DiagnosticPage() {
         ) : (
           <Button onClick={() => finish([])}>See profile</Button>
         )}
-        {isMcq && step === items.length - 1 ? null : null}
-        {isMcq && current && step === items.length - 0 ? null : null}
       </main>
+      <SiteFooter />
     </div>
   );
 }

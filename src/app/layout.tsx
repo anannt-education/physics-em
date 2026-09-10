@@ -4,6 +4,7 @@ import "katex/dist/katex.min.css";
 import "./globals.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { StudentProvider } from "@/lib/store/student-store";
+import { DEFAULT_DESCRIPTION, DEFAULT_TITLE, SITE_ORIGIN } from "@/lib/site";
 
 const sourceSans = Source_Sans_3({
   variable: "--font-source-sans",
@@ -25,12 +26,17 @@ const ibmMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_ORIGIN),
   title: {
-    default: "Anannt · AP Physics C: Electricity & Magnetism",
-    template: "%s · Anannt E&M",
+    default: DEFAULT_TITLE,
+    template: "%s · Anannt Study",
   },
-  description:
-    "Mastery-led AP Physics C: E&M preparation. Diagnose, learn the field-and-flux cycle, practise under the May 2027 exam profile, and repair errors with evidence — not video-watching percentages.",
+  description: DEFAULT_DESCRIPTION,
+  applicationName: "Anannt Study · Physics C E&M",
+  authors: [{ name: "Anannt Education" }],
+  creator: "Anannt Education",
+  publisher: "Anannt Education",
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

@@ -29,7 +29,7 @@ export const EXAM_PROFILE_2027: ExamProfile = {
     "Fall 2026 clarifications replace the former 40-question / 80-minute MCQ section and 100-minute FRQ section.",
     "Older mocks must be labelled by examination version. This product ships only the 2027 profile.",
     "Anannt does not convert uncalibrated percentages into official 1–5 scores.",
-    "Registering for Anannt does not register a student for the AP exam.",
+    "Wednesday 5 May 2027 Session 2 clashes with Physics 1. Pick one sitting.",
   ],
 };
 

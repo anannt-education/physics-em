@@ -14,6 +14,8 @@ import {
   Timer,
 } from "lucide-react";
 import { AnanntLogo } from "@/components/layout/Logo";
+import { SiteFooter } from "@/components/layout/SiteFooter";
+import { PUBLIC_LESSONS } from "@/lib/mount";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useStudent } from "@/lib/store/student-store";
 import { cn } from "@/lib/utils";
@@ -61,6 +63,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <Link href="/" className="flex items-center">
             <AnanntLogo inverse />
           </Link>
+          <Link href={PUBLIC_LESSONS[0].path} className="hidden text-xs text-amber-soft sm:inline">
+            Two lessons open
+          </Link>
           <nav className="ml-4 hidden min-w-0 flex-1 items-center gap-0.5 overflow-x-auto md:flex" aria-label="Primary">
             {NAV.map((item) => {
               const active = pathname === item.href || pathname.startsWith(item.href + "/");
@@ -91,30 +96,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <div id="main" className="mx-auto w-full max-w-7xl px-3 py-6 sm:px-6 sm:py-8">
         {children}
       </div>
-      <footer className="border-t border-border bg-paper/60">
-        <div className="mx-auto flex max-w-7xl flex-col gap-2 px-3 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-6">
-          <p>
-            Anannt is independent preparation. It does not register you for the AP exam and is not affiliated with the College Board.
-          </p>
-          <div className="flex flex-wrap gap-3">
-            <Link href="/resources" className="underline-offset-2 hover:underline">
-              Signature resources
-            </Link>
-            <Link href="/expert" className="underline-offset-2 hover:underline">
-              Expert queue
-            </Link>
-            <Link href="/parent" className="underline-offset-2 hover:underline">
-              Guardian summary
-            </Link>
-            <Link href="/instructor" className="underline-offset-2 hover:underline">
-              Instructor
-            </Link>
-            <Link href="/cms" className="underline-offset-2 hover:underline">
-              Academic CMS
-            </Link>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

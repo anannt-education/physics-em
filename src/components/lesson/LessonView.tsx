@@ -15,6 +15,8 @@ import { itemById } from "@/content/items";
 import { lessonById } from "@/content/lessons";
 import { addMistake, useStudent } from "@/lib/store/student-store";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { isLesson2Slug } from "@/lib/mount";
+import { redirectToGate } from "@/lib/gate-client";
 
 export function LessonView({ lesson }: { lesson: Lesson }) {
   const router = useRouter();
@@ -353,14 +355,27 @@ export function LessonView({ lesson }: { lesson: Lesson }) {
               ...s,
               completedLessons: Array.from(new Set([...s.completedLessons, lesson.id])),
             }));
-            router.push("/plan");
+            if (isLesson2Slug(lesson.slug)) {
+              redirectToGate("8", "1:1");
+              return;
+            }
+            router.push("/learn/finite-line-of-charge");
           }}
           disabled={!independentDone && items.length > 0}
         >
           Mark lesson reading complete (mastery still requires independent evidence)
         </Button>
-        <Button variant="outline" onClick={() => router.push("/plan")}>
-          Back to plan
+        <Button
+          variant="outline"
+          onClick={() => {
+            if (isLesson2Slug(lesson.slug)) {
+              redirectToGate("8", "1:1");
+              return;
+            }
+            router.push("/");
+          }}
+        >
+          {isLesson2Slug(lesson.slug) ? "After lesson 2 — Burjuman gate" : "Back to home"}
         </Button>
       </div>
     </div>

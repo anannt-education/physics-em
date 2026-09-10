@@ -142,15 +142,15 @@ export const MOCK_FORMS = [
   },
   {
     id: "mock-2027-2",
-    title: "Anannt Mock B — May 2027 profile",
+    title: "Anannt Mock B — same stems as Mock A (not a second paper)",
     profileId: ACTIVE_EXAM_PROFILE.id,
-    mcqIds: MOCK1_PUBLIC.map((i) => i.id),
-    frqIds: MOCK1_FRQS.map((f) => f.id),
+    mcqIds: [...MOCK1_PUBLIC].reverse().map((i) => i.id),
+    frqIds: [...MOCK1_FRQS].reverse().map((f) => f.id),
     allocation: MOCK_MCQ_ALLOCATION_2027,
     secure: true as const,
     versionLabel: "2027-B",
     notes:
-      "Second sitting of the 2027 blueprint. Item order is scrambled per attempt. A later commercial release replaces this with an independent 42-item pool.",
+      "Not a second paper. Mock B reuses Mock A’s public stems in reverse order. It is a scrambled repeat of the same sitting, not an independent 42-item form. Keep it off any “second paper” sentence.",
   },
 ];
 

@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  basePath: "/physics-em",
+  trailingSlash: false,
   allowedDevOrigins: ["127.0.0.1", "localhost"],
 };
 

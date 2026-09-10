@@ -15,7 +15,9 @@ export default function LearnIndexPage() {
       <div>
         <h1 className="font-heading text-3xl text-navy">Learn</h1>
         <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
-          Official numbering 8–13 is preserved. Friendly modules sit beside CED topic identifiers. Enrichment is marked and excluded from readiness. Coverage is objective evidence, not videos watched.
+          Two public lessons are open. Later units stay on this map as unpublished. Completing a
+          listed card after the gate is not a complete E&amp;M course. Coverage is objective
+          evidence, not videos watched.
         </p>
       </div>
       {UNITS.map((unit) => {
@@ -28,6 +30,7 @@ export default function LearnIndexPage() {
             </h2>
             <p className="text-sm text-muted-foreground">
               {unit.summary} MCQ weighting {unit.mcqWeight}.
+              {lessons.length === 0 ? " Unpublished on this desk." : ""}
             </p>
             <div className="grid gap-3 md:grid-cols-2">
               {lessons.map((lesson) => {

@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --hostname 0.0.0.0 --port 43123",
+    "dev": "next dev --hostname 0.0.0.0 --port 43140",
     "build": "next build",
-    "start": "next start --hostname 0.0.0.0 --port 43123",
+    "start": "next start --hostname 0.0.0.0 --port 43140",
     "lint": "eslint",
     "test:physics": "npx tsx src/lib/physics/verify.ts"
   },
