@@ -181,3 +181,5 @@ export const INVESTIGATIONS: Investigation[] = [
 export function investigationById(id: string) {
   return INVESTIGATIONS.find((i) => i.id === id);
 }
+
+export const investigations = INVESTIGATIONS;

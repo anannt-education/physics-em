@@ -25,19 +25,26 @@ export default function InstructorPage() {
   }, []);
 
   const coverage = useMemo(() => {
-    const byUnit = new Map<number, { items: number; lessons: number; labs: number }>();
-    for (let u = 8; u <= 15; u++) byUnit.set(u, { items: 0, lessons: 0, labs: 0 });
+    const byUnit = new Map<string, { items: number; lessons: number; labs: number }>();
+    for (let u = 8; u <= 13; u++) byUnit.set(String(u), { items: 0, lessons: 0, labs: 0 });
+    byUnit.set("bridge", { items: 0, lessons: 0, labs: 0 });
     for (const i of allItems) {
-      const row = byUnit.get(i.unit)!;
+      const key = String(i.unit);
+      const row = byUnit.get(key) ?? { items: 0, lessons: 0, labs: 0 };
       row.items += 1;
+      byUnit.set(key, row);
     }
     for (const l of allLessons) {
-      const row = byUnit.get(l.unit);
-      if (row) row.lessons += 1;
+      const key = String(l.unit);
+      const row = byUnit.get(key) ?? { items: 0, lessons: 0, labs: 0 };
+      row.lessons += 1;
+      byUnit.set(key, row);
     }
     for (const lab of investigations) {
-      const row = byUnit.get(lab.unit);
-      if (row) row.labs += 1;
+      const key = String(lab.unit);
+      const row = byUnit.get(key) ?? { items: 0, lessons: 0, labs: 0 };
+      row.labs += 1;
+      byUnit.set(key, row);
     }
     return [...byUnit.entries()];
   }, []);

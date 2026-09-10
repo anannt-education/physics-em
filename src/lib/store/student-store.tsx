@@ -62,13 +62,7 @@ export function seedSampleState(): StudentState {
   const s = defaultState();
   s.profile = sampleProfile();
   s.entitlement = { tier: "core", frqReviewsRemaining: 0, mocksIncluded: 4 };
-  s.completedLessons = [
-    "bridge-vectors",
-    "bridge-algebra",
-    "u8-coulomb-vectors",
-    "u8-field-model",
-    "u8-flux-definition",
-  ];
+  s.completedLessons = ["u8-flux-misconception"];
   s.events = [
     {
       id: "e1",

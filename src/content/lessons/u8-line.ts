@@ -19,7 +19,7 @@ export const U8_LINE: Lesson = {
     objectives: ["8.4.A"],
     capability:
       "Write $dq=\\lambda dx$, resolve $d\\vec{E}$, and integrate a finite straight line; recover the infinite-line limit.",
-    prereqs: ["bridge-integrals", "u8-superposition"],
+    prereqs: [],
     minutes: [28, 35],
     ...review,
     investigationId: "charge-field",

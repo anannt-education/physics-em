@@ -19,7 +19,7 @@ export const U8_MIS: Lesson = {
     objectives: ["8.5.B"],
     capability:
       "Reject the claim that $Q_{\\mathrm{enc}}=0$ implies $\\vec{E}=0$ on a surface, using uniform-field and external-charge examples.",
-    prereqs: ["u8-flux-definition"],
+    prereqs: [],
     minutes: [25, 35],
     ...review,
     investigationId: "gauss",

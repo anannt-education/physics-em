@@ -209,7 +209,7 @@ export const TOPICS: Topic[] = [
     title: "Continuous sources and integration",
     emphasis: "Source element dQ; integrate the required vector component.",
     evidenceOfUnderstanding: "Constructs a source element and integrates the required vector component.",
-    lessonIds: ["u8-continuous-line", "u8-ring-and-disk"],
+    lessonIds: ["u8-continuous-line"],
     objectiveIds: ["8.4.A"],
   },
   {
@@ -218,7 +218,7 @@ export const TOPICS: Topic[] = [
     title: "Electric flux",
     emphasis: "Φ_E = ∫ E · dA; net flux versus local field.",
     evidenceOfUnderstanding: "Explains why zero net flux does not establish a zero field everywhere.",
-    lessonIds: ["u8-flux-definition", "u8-flux-misconception"],
+    lessonIds: ["u8-flux-misconception"],
     objectiveIds: ["8.5.A", "8.5.B"],
   },
   {

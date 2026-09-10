@@ -29,9 +29,7 @@ export default function ExpertPage() {
           Finish onboarding and complete the diagnostic to unlock the instructor-grade briefing —
           exam profile, AP Classroom mapping, and the 2026 delta.
         </p>
-        <Button asChild>
-          <Link href="/onboarding">Go to onboarding</Link>
-        </Button>
+        <Button render={<Link href="/onboarding" />}>Go to onboarding</Button>
         <IssueButton />
       </div>
     );
@@ -46,15 +44,15 @@ export default function ExpertPage() {
       <section className="rounded-lg border bg-card p-5 text-sm">
         <h2 className="font-medium">Exam profile</h2>
         <p className="mt-2 text-muted-foreground">
-          Section I: 40 MCQs, 80 minutes, 50%. Section II: 4 FRQs, 100 minutes, 50% — typically 3
-          long + 1 short, with experimental design and paragraph-length reasoning required.
+          Section I: 42 MCQs, 85 minutes. Section II: 4 FRQs, 95 minutes. Hybrid digital for May
+          2027. Anannt is a self-study supplement, not an official exam environment.
         </p>
       </section>
       <section className="rounded-lg border bg-card p-5 text-sm">
-        <h2 className="font-medium">AP Classroom mapping</h2>
+        <h2 className="font-medium">Official course materials</h2>
         <p className="mt-2 text-muted-foreground">
-          Progress, Topic Questions, and Progress Checks are the official practice spine. This
-          portal is a study companion — not a substitute for AP Classroom.
+          This studio is a study companion. It is not a substitute for the official course and
+          exam materials a school provides.
         </p>
       </section>
       <section className="rounded-lg border bg-card p-5 text-sm">

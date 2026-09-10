@@ -95,8 +95,8 @@ export const EVALUATION_SET = [
 
 const KEYWORDS: Array<{ re: RegExp; lessonId: string }> = [
   { re: /flux|gauss|gaussian|enclosed/i, lessonId: "u8-flux-misconception" },
-  { re: /coulomb|point charge|superposition/i, lessonId: "u8-coulomb-vectors" },
-  { re: /field model|test charge|source/i, lessonId: "u8-field-model" },
+  { re: /coulomb|point charge|superposition|finite (rod|line)|line of charge/i, lessonId: "u8-continuous-line" },
+  { re: /field model|test charge|local field/i, lessonId: "u8-flux-misconception" },
   { re: /potential|equipotential|reference|dV/i, lessonId: "u9-zero-v-vs-zero-e" },
   { re: /capacitor|dielectric|stored energy/i, lessonId: "u10-dielectrics" },
   { re: /conductor|electrostatic equilibrium/i, lessonId: "u10-conductor-equilibrium" },
@@ -118,7 +118,10 @@ export function groundedLesson(query: string, preferredLessonId?: string): Lesso
     if (preferred) return preferred;
   }
   const hit = KEYWORDS.find((k) => k.re.test(query));
-  if (hit) return lessonById(hit.lessonId);
+  if (hit) {
+    const found = lessonById(hit.lessonId);
+    if (found) return found;
+  }
   return LESSONS.find((l) => l.slug === "zero-flux-is-not-zero-field");
 }
 

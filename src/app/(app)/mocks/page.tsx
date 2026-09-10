@@ -14,11 +14,10 @@ export default function MocksLobby() {
       <div>
         <h1 className="font-heading text-3xl text-navy">Mock exams</h1>
         <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
-          Fixed-form mocks using the {ACTIVE_EXAM_PROFILE.label}. Anannt is an independent practice environment — not Bluebook.{" "}
-          <a className="underline-offset-2 hover:underline" href="https://apcentral.collegeboard.org/exam-administration-ordering-scores/digital-ap-exams/bluebook-digital-testing" target="_blank" rel="noreferrer">
-            Official Bluebook familiarisation
-          </a>
-          . A website cannot guarantee you stopped writing when its timer ended. Self-administered attempts are not supervised evidence.
+          Fixed-form practice using the {ACTIVE_EXAM_PROFILE.label}. Anannt is an independent practice
+          environment — not Bluebook. Mock B is not a second paper: it reuses Mock A stems in reverse
+          order. Do not treat two lobby cards as two independent exams. A website cannot guarantee you
+          stopped writing when its timer ended.
         </p>
       </div>
       {MOCK_FORMS.map((form) => {
