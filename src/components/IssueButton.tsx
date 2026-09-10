@@ -15,11 +15,11 @@ import { addIssue, useStudent } from "@/lib/store/student-store";
 import type { ContentIssue } from "@/lib/types";
 
 export function IssueButton({
-  targetType,
-  targetId,
+  targetType = "lesson",
+  targetId = "desk",
 }: {
-  targetType: ContentIssue["targetType"];
-  targetId: string;
+  targetType?: ContentIssue["targetType"];
+  targetId?: string;
 }) {
   const { setState } = useStudent();
   const [note, setNote] = useState("");

@@ -14,6 +14,7 @@ export const LESSONS: Lesson[] = [
   ...UNIT12_LESSONS,
   ...UNIT13_LESSONS,
 ];
+export const allLessons = LESSONS;
 
 export function lessonById(id: string) {
   return LESSONS.find((l) => l.id === id);

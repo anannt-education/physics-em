@@ -4,6 +4,7 @@ import { UNIT8_ITEMS } from "./unit8";
 import { REST_ITEMS } from "./rest";
 
 export const PRACTICE_ITEMS: McqItem[] = [...DIAGNOSTIC_ITEMS, ...UNIT8_ITEMS, ...REST_ITEMS];
+export const allItems = PRACTICE_ITEMS;
 
 export function itemById(id: string) {
   return PRACTICE_ITEMS.find((i) => i.id === id);

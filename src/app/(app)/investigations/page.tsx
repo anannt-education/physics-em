@@ -23,7 +23,7 @@ export default function InvestigationsIndexPage() {
             >
               <p className="text-xs text-muted-foreground">Unit {lab.unit}</p>
               <p className="font-medium">{lab.title}</p>
-              <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{lab.goal}</p>
+              <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{lab.assumption}</p>
             </Link>
           </li>
         ))}

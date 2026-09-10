@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { AnanntLogo } from "@/components/layout/Logo";
 import { JsonLd } from "@/components/json-ld";
 import { SiteFooter } from "@/components/layout/SiteFooter";
-import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   CLASH_HOME,
@@ -17,7 +16,6 @@ import {
   sittingChoiceHref,
 } from "@/lib/mount";
 import { DEFAULT_DESCRIPTION, DEFAULT_TITLE, faqJsonLd, jsonLdGraph, pageMetadata } from "@/lib/site";
-import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = pageMetadata({
   title: DEFAULT_TITLE,
@@ -78,7 +76,11 @@ export default function HomePage() {
               <p className="mt-2 text-sm text-muted-foreground">{lesson.blurb}</p>
               <Link
                 href={lesson.path}
-                className={cn(buttonVariants({ variant: i === 0 ? "default" : "outline" }), "mt-4 inline-flex")}
+                className={
+                  i === 0
+                    ? "mt-4 inline-flex rounded-lg bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground"
+                    : "mt-4 inline-flex rounded-lg border border-border bg-background px-3 py-1.5 text-sm font-medium"
+                }
               >
                 {i === 0 ? "Start lesson 1 — free, no account" : "Open lesson 2"}
               </Link>
@@ -102,7 +104,10 @@ export default function HomePage() {
               </a>{" "}
               first. This desk is calculus-based E&amp;M, not a substitute for that algebra course.
             </p>
-            <a href={sittingChoiceHref()} className={cn(buttonVariants(), "inline-flex")}>
+            <a
+              href={sittingChoiceHref()}
+              className="inline-flex rounded-lg bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground"
+            >
               Ask Burjuman which sitting to keep
             </a>
           </CardContent>

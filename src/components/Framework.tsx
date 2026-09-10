@@ -22,6 +22,8 @@ export function FrameworkStrip({ active }: { active?: string }) {
   );
 }
 
+export { FrameworkStrip as Framework };
+
 export function MasteryChip({ state }: { state: string }) {
   const map: Record<string, string> = {
     not_assessed: "bg-muted text-muted-foreground",
