@@ -359,7 +359,7 @@ export function LessonView({ lesson }: { lesson: Lesson }) {
               redirectToGate("8", "1:1");
               return;
             }
-            router.push("/learn/finite-line-of-charge");
+            router.push("/learn/field-of-a-line-charge");
           }}
           disabled={!independentDone && items.length > 0}
         >

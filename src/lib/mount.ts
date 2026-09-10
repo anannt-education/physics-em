@@ -21,8 +21,8 @@ export const PUBLIC_LESSONS = [
   },
   {
     id: "u8-continuous-line",
-    slug: "finite-line-of-charge",
-    path: "/learn/finite-line-of-charge",
+    slug: "field-of-a-line-charge",
+    path: "/learn/field-of-a-line-charge",
     unit: "8",
     title: "A finite line of charge",
     blurb:
