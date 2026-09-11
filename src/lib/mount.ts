@@ -34,13 +34,13 @@ export const PUBLIC_LESSON_SLUGS: ReadonlySet<string> = new Set(PUBLIC_LESSONS.m
 export const LESSON_2 = PUBLIC_LESSONS[1];
 
 export const HONESTY =
-  "Two public lessons. Not a complete E&M course. Wednesday 5 May 2027 Session 2 clashes with Physics 1. Choose one sitting. Mock B is not a second paper.";
+  "Not a complete E&M course. Wednesday 5 May 2027 Session 2 clashes with Physics 1. Choose one sitting. Mock B is not a second paper.";
 
 export const VOICE =
-  "The mathematics is calculus. Wednesday 5 May 2027 is the other problem — same session as Physics 1. Read two lessons, then ask Burjuman which sitting to keep.";
+  "The mathematics is calculus. Wednesday 5 May 2027 is the other problem — same session as Physics 1. Start at flux versus local field, then ask Burjuman which sitting to keep.";
 
 export const QUIET_LINE =
-  "We would rather you finish this idea than buy a package. A person at Office 105 will sit with the exact question if you want one later.";
+  "If you want a person in the room later, we are at Office 105, Bank Street Building, Burjuman Metro Exit 2. You do not need us to begin.";
 
 /** Official Wave C clash sentence. Print in human language. Never as a boast. */
 export const CLASH_OFFICIAL =

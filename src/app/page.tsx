@@ -70,7 +70,7 @@ export default function HomePage() {
           {PUBLIC_LESSONS.map((lesson, i) => (
             <li key={lesson.id} className="rounded-2xl border border-border bg-paper p-5">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber">
-                Lesson {i + 1} · public · Unit 8
+                Lesson {i + 1} · Unit 8
               </p>
               <h2 className="mt-1 font-heading text-2xl text-navy">{lesson.title}</h2>
               <p className="mt-2 text-sm text-muted-foreground">{lesson.blurb}</p>
@@ -82,7 +82,7 @@ export default function HomePage() {
                     : "mt-4 inline-flex rounded-lg border border-border bg-background px-3 py-1.5 text-sm font-medium"
                 }
               >
-                {i === 0 ? "Start lesson 1 — free, no account" : "Open lesson 2"}
+                {i === 0 ? "Start here" : "Open lesson 2"}
               </Link>
             </li>
           ))}

@@ -44,7 +44,7 @@ export function SiteFooter() {
             </li>
             <li>
               <a href={`${SITE_ORIGIN}/start?subject=physics-em`} className="underline-offset-2 hover:underline">
-                After two lessons
+                Tell us who is sitting
               </a>
             </li>
             <li>
