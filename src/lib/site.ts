@@ -12,9 +12,9 @@ export const PRODUCT_NAME = "Anannt Study";
 export const TITLE_BRAND = "Anannt Study";
 export const SITE_URL = MOUNT_SITE_URL;
 
-export const DEFAULT_TITLE = "Physics C: E&M self-prep · May 2027 · Anannt Study";
+export const DEFAULT_TITLE = "Physics C: E&M self-prep · May 2027";
 export const DEFAULT_DESCRIPTION =
-  "Two public calculus E&M lessons. Wednesday 5 May 2027 Session 2 clashes with Physics 1. Pick one sitting. Not a complete course. Anannt Education, Dubai.";
+  "Start calculus E&M at flux versus local field. Wednesday 5 May 2027 Session 2 clashes with Physics 1. Pick one sitting. Not a complete course. Anannt Education, Dubai.";
 
 export function pageTitle(page: string) {
   if (page === DEFAULT_TITLE) return page;
@@ -90,7 +90,7 @@ export function jsonLdGraph() {
       {
         "@type": "Course",
         "@id": `${url}/#course`,
-        name: "AP Physics C: Electricity and Magnetism — two public lessons",
+        name: "AP Physics C: Electricity and Magnetism",
         description: `${HONESTY} ${CLASH_HOME}`,
         provider: { "@id": `${url}/#organization` },
         educationalLevel: "High school",
@@ -99,7 +99,7 @@ export function jsonLdGraph() {
         teaches: "Gauss’s law: net flux versus local field. Coulomb integration for a finite line of charge.",
         hasCourseInstance: {
           "@type": "CourseInstance",
-          name: "Two public E&M lessons · May 2027 sitting choice",
+          name: "Physics C E&M self-prep · May 2027 sitting choice",
           courseMode: "online",
           courseWorkload: "PT70M",
         },
