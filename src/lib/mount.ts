@@ -161,12 +161,12 @@ export const HOME_FAQS = [
   {
     question: "Can my child start Physics C E&M without an account?",
     answer:
-      "Yes — two lessons. Flux versus local field, then a finite line of charge. After those two sittings we send you to study.anannt.ae/start. Parent WhatsApp is required there. If Physics 1 is also on the form, the next human step is a sitting-choice call, not taking both on 5 May.",
+      "Yes. No account to begin. Start with flux versus local field, then a finite line of charge. After a couple of sittings we send you to study.anannt.ae/start. Parent WhatsApp is required there. If Physics 1 is also on the form, the next human step is a sitting-choice call, not taking both on 5 May.",
   },
   {
     question: "Is this a complete E&M course?",
     answer:
-      "No. Two public lessons are open. Units 9–13 stay on the map as unpublished. Mock A may sit behind the gate. Mock B reuses Mock A stems — it is not a second paper.",
+      "No. This desk is not a complete E&M course. Units 9–13 stay unpublished. Mock A may sit behind the gate. Mock B reuses Mock A stems — it is not a second paper.",
   },
   {
     question: "Is this Bluebook?",
