@@ -2,14 +2,20 @@
 
 import { use, useEffect, useState } from "react";
 import Link from "next/link";
+import { MOCK1_FRQS } from "@/content/mocks";
+import { ACTIVE_EXAM_PROFILE } from "@/content/exam-profile";
+import { apiFetch } from "@/lib/api";
+import { RichText } from "@/components/math/RichText";
 import { useStudent } from "@/lib/store/student-store";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function MockResults({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const { state, setState } = useStudent();
+  const { state, setState, loaded } = useStudent();
   const attempt = state.mockAttempts.filter((a) => a.formId === id && a.submittedAt).at(-1);
+  const answers = attempt?.answers;
+  const revision = attempt?.revision;
   const [detail, setDetail] = useState<{
     score: number;
     total: number;
@@ -19,18 +25,20 @@ export default function MockResults({ params }: { params: Promise<{ id: string }
   const [loadError, setLoadError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!attempt) return;
-    fetch(`/api/mocks/${id}/grade`, {
+    if (!answers) return;
+    apiFetch(`/api/mocks/${id}/grade`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ answers: attempt.answers, revision: attempt.revision, review: true }),
+      body: JSON.stringify({ answers, revision, review: true }),
     })
       .then(async (r) => {
         if (!r.ok) throw new Error("Could not load review.");
         setDetail(await r.json());
       })
       .catch((e: Error) => setLoadError(e.message));
-  }, [attempt, id]);
+  }, [answers, revision, id]);
+
+  if (!loaded) return <p>Restoring results…</p>;
 
   if (!attempt) {
     return (
@@ -42,6 +50,12 @@ export default function MockResults({ params }: { params: Promise<{ id: string }
   }
 
   const conf = attempt.confidenceAfter;
+  const rubric = MOCK1_FRQS.flatMap((f) => f.rubric.map((r) => ({ ...r, key: `${f.id}:${r.id}` })));
+  const complete = rubric.every((r) => typeof attempt.selfRubric?.[r.key] === "boolean");
+  const frqScore = rubric.reduce((n, r) => n + (attempt.selfRubric?.[r.key] ? r.points : 0), 0);
+  const frqMax = MOCK1_FRQS.reduce((n, f) => n + f.totalPoints, 0);
+  const composite = complete && attempt.mcqScore !== undefined && attempt.mcqTotal
+    ? 100 * (ACTIVE_EXAM_PROFILE.mcqWeight * attempt.mcqScore / attempt.mcqTotal + ACTIVE_EXAM_PROFILE.frqWeight * frqScore / frqMax) : null;
   return (
     <div className="space-y-6">
       <h1 className="font-heading text-3xl text-navy">Results</h1>
@@ -64,6 +78,31 @@ export default function MockResults({ params }: { params: Promise<{ id: string }
           </CardContent>
         </Card>
       ) : null}
+      <Card>
+        <CardHeader><CardTitle>FRQ self-review</CardTitle></CardHeader>
+        <CardContent className="space-y-4 text-sm">
+          <p>Mark each criterion earned or not earned. Each criterion is all-or-nothing.</p>
+          {(id.endsWith("2") ? [...MOCK1_FRQS].reverse() : MOCK1_FRQS).map((f, i) => <section key={f.id} className="space-y-2">
+            <h2 className="font-semibold">Question {i + 1} ({f.totalPoints} points)</h2>
+            <p><strong>Your response:</strong> {attempt.frqText[f.id] || "No typed response"}</p>
+            <p><strong>Model solution:</strong> <RichText text={f.modelSolution} /></p>
+            {f.rubric.map((r) => {
+              const key = `${f.id}:${r.id}`;
+              return <fieldset key={key} className="rounded border p-2">
+                <legend><RichText text={r.earns} /> ({r.points} points)</legend>
+                {([true, false] as const).map((earned) => <label key={String(earned)} className="mr-4">
+                  <input type="radio" name={key} checked={attempt.selfRubric?.[key] === earned} onChange={() => setState((s) => ({ ...s, mockAttempts: s.mockAttempts.map((a) => {
+                    if (a.id !== attempt.id) return a;
+                    const selfRubric = { ...a.selfRubric, [key]: earned };
+                    return { ...a, selfRubric, frqStatus: rubric.every((entry) => typeof selfRubric[entry.key] === "boolean") ? "self_reviewed" : "submitted" };
+                  }) }))} /> {earned ? "Earned" : "Not earned"}
+                </label>)}
+              </fieldset>;
+            })}
+          </section>)}
+          <p>{complete ? `FRQ self-score: ${frqScore} / ${frqMax}. Weighted composite: ${composite?.toFixed(1)}% (50% MCQ, 50% FRQ).` : "FRQ self-score and weighted composite pending until every criterion is reviewed."}</p>
+        </CardContent>
+      </Card>
       <Card>
         <CardHeader>
           <CardTitle>Three repair actions</CardTitle>
