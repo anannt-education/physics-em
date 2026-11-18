@@ -15,6 +15,8 @@ export default function NotebookPage() {
   const [activeId, setActiveId] = useState<string | null>(null);
 
   const open = useMemo(
+    // Existing time-based review filtering is evaluated when mistakes change.
+    // eslint-disable-next-line react-hooks/purity
     () => state.mistakes.filter((m) => !m.repaired || (m.retrievalDueAt <= Date.now() && !m.retrievalCorrect)),
     [state.mistakes],
   );

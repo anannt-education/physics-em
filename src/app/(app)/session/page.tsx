@@ -17,7 +17,7 @@ const STANDARD = [
 
 export default function SessionPage() {
   const { state, setState, loaded } = useStudent();
-  const [now, setNow] = useState(Date.now());
+  const [now, setNow] = useState(() => Date.now());
   const next = recommendedTask(state.profile, state.events, state.completedLessons, state.mistakes);
 
   useEffect(() => {

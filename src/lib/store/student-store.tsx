@@ -119,6 +119,8 @@ export function StudentProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     try {
       const raw = localStorage.getItem(KEY);
+      // Hydrate from browser storage after mount.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       if (raw) setStateRaw(JSON.parse(raw) as StudentState);
     } catch {
       /* ignore corrupt storage */

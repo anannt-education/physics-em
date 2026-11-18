@@ -20,7 +20,7 @@ export const MOCK1_KEYS: Record<string, MockKey> = {
   "m1-10": { correct: "B", explanation: "Like charges, $U=ke^2/r>0$, larger at smaller $r$. Conservative: path independent.", distractorRationales: { A: "Opposite charges.", C: "Only at infinity.", D: "Electrostatics is conservative." } },
   "m1-11": { correct: "B", explanation: "Scalar $V$ cancels; vector $E$ from $+$ to $-$ does not.", distractorRationales: { A: "$E\\neq 0$.", C: "Ring centre, not dipole midpoint.", D: "Both defined." } },
   "m1-12": { correct: "B", explanation: "$\\Delta V=-E\\Delta x=-8.0\\,\\mathrm{V}$.", distractorRationales: { A: "Missed the minus.", C: "Not an equipotential along x.", D: "Quoted $E$." } },
-  "m1-13": { correct: "A", explanation: "$E_x=-dV/dx=-10x=-4.0\\,\\mathrm{N/C}$.", distractorRationales: { B: "Dropped the minus.", C: "Did not evaluate.", D: "Quoted $V$ or $x^2$ slip." } },
+  "m1-13": { correct: "A", explanation: "$E_x=-dV/dx=-10x=-4.0\\,\\mathrm{N/C}$.", distractorRationales: { B: "Dropped the minus.", C: "Missed the factor of 2 in the derivative.", D: "Quoted $V$ or $x^2$ slip." } },
   "m1-14": { correct: "B", explanation: "$K=q\\Delta V=100\\,\\mathrm{eV}$ for a proton from rest.", distractorRationales: { A: "Joules would be $1.6\\times 10^{-17}\\,\\mathrm{J}$, not 100 J.", C: "It gains $K$.", D: "Wrong conversion." } },
   "m1-15": { correct: "A", explanation: "Field cancels; every $dq$ is at distance $R$.", distractorRationales: { B: "Swapped E and V behaviour.", C: "$V\\neq 0$.", D: "Finite." } },
   "m1-16": { correct: "A", explanation: "$E=0$ throughout the conducting material.", distractorRationales: { B: "Exterior.", C: "Entire metal, not a point.", D: "Just outside." } },

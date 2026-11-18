@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useEffect, useMemo, useRef, useState } from "react";
+import { use, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { mockFormById, MOCK1_FRQS } from "@/content/mocks";
 import { MOCK1_PUBLIC } from "@/content/mocks/form1-public";
@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { RichText } from "@/components/math/RichText";
 import { upsertMockAttempt, useStudent } from "@/lib/store/student-store";
+import { apiFetch } from "@/lib/api";
 import type { MockAttempt } from "@/lib/types";
 
 function extraFactor(extra?: boolean) {
@@ -19,7 +20,7 @@ export default function MockWorkspace({ params }: { params: Promise<{ id: string
   const { id } = use(params);
   const form = mockFormById(id);
   const router = useRouter();
-  const { state, setState } = useStudent();
+  const { state, setState, loaded } = useStudent();
   const extra = state.profile?.accessibility.extraTime;
   const scramble = id.endsWith("2");
   const items = useMemo(() => {
@@ -29,11 +30,18 @@ export default function MockWorkspace({ params }: { params: Promise<{ id: string
   }, [scramble]);
 
   const existing = state.mockAttempts.find((a) => a.formId === id && !a.submittedAt);
-  const [attempt, setAttempt] = useState<MockAttempt | null>(existing ?? null);
+  const [attempt, setAttempt] = useState<MockAttempt | null>(null);
+  const [restored, setRestored] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
   const [idx, setIdx] = useState(0);
   const [saveState, setSaveState] = useState<"saved" | "saving" | "offline">("saved");
-  const [now, setNow] = useState(Date.now());
-  const debounce = useRef<number | null>(null);
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    // Restore the locally persisted attempt once the provider has hydrated.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (loaded && !restored) { setAttempt(existing ?? null); setRestored(true); }
+  }, [loaded, restored, existing]);
 
   useEffect(() => {
     const t = setInterval(() => setNow(Date.now()), 1000);
@@ -48,7 +56,6 @@ export default function MockWorkspace({ params }: { params: Promise<{ id: string
 
   function start() {
     const mcqMs = ACTIVE_EXAM_PROFILE.mcqMinutes * 60 * 1000 * extraFactor(extra);
-    const frqMs = ACTIVE_EXAM_PROFILE.frqMinutes * 60 * 1000 * extraFactor(extra);
     const a: MockAttempt = {
       id: crypto.randomUUID(),
       formId: id,
@@ -56,7 +63,7 @@ export default function MockWorkspace({ params }: { params: Promise<{ id: string
       startedAt: Date.now(),
       section: "mcq",
       mcqEndsAt: Date.now() + mcqMs,
-      frqEndsAt: Date.now() + mcqMs + frqMs,
+      frqEndsAt: 0,
       answers: {},
       flags: [],
       frqText: {},
@@ -70,21 +77,11 @@ export default function MockWorkspace({ params }: { params: Promise<{ id: string
 
   function saveAnswer(qid: string, value: string) {
     if (!attempt) return;
-    setSaveState("saving");
-    if (debounce.current) window.clearTimeout(debounce.current);
-    debounce.current = window.setTimeout(() => {
-      setAttempt((prev) =>
-        prev
-          ? {
-              ...prev,
-              answers: { ...prev.answers, [qid]: value },
-              revision: prev.revision + 1,
-            }
-          : prev,
-      );
-      setSaveState(typeof navigator !== "undefined" && navigator.onLine ? "saved" : "offline");
-    }, 250);
+    setAttempt((prev) => prev ? { ...prev, answers: { ...prev.answers, [qid]: value }, revision: prev.revision + 1 } : prev);
+    setSaveState(navigator.onLine ? "saved" : "offline");
   }
+
+  if (!loaded || !restored) return <p>Restoring attempt…</p>;
 
   if (!attempt) {
     return (
@@ -105,7 +102,7 @@ export default function MockWorkspace({ params }: { params: Promise<{ id: string
   const remainingMcq = Math.max(0, attempt.mcqEndsAt - now);
   const remainingFrq = Math.max(0, attempt.frqEndsAt - now);
   if (attempt.section === "mcq" && remainingMcq <= 0 && !attempt.submittedAt) {
-    setAttempt((a) => (a ? { ...a, section: "frq" } : a));
+    setAttempt((a) => (a ? { ...a, section: "frq", frqEndsAt: a.mcqEndsAt + ACTIVE_EXAM_PROFILE.frqMinutes * 60000 * extraFactor(extra) } : a));
   }
 
   const q = items[idx];
@@ -113,14 +110,16 @@ export default function MockWorkspace({ params }: { params: Promise<{ id: string
 
   async function submitAll() {
     if (!attempt) return;
-    const res = await fetch(`/api/mocks/${id}/grade`, {
+    setSubmitting(true);
+    setSubmitError(null);
+    try {
+    const res = await apiFetch(`/api/mocks/${id}/grade`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ answers: attempt.answers, revision: attempt.revision }),
     });
     if (!res.ok) {
-      setAttempt((a) => (a ? { ...a, incidentLog: [...a.incidentLog, `grade failed ${res.status}`] } : a));
-      return;
+      throw new Error(`Grading failed (${res.status}).`);
     }
     const data = (await res.json()) as { score: number; total: number };
     const done: MockAttempt = {
@@ -134,6 +133,9 @@ export default function MockWorkspace({ params }: { params: Promise<{ id: string
     setAttempt(done);
     upsertMockAttempt(setState, done);
     router.push(`/mocks/${id}/results`);
+    } catch {
+      setSubmitError("Submission failed. Your attempt is saved on this device. Please retry.");
+    } finally { setSubmitting(false); }
   }
 
   return (
@@ -209,7 +211,7 @@ export default function MockWorkspace({ params }: { params: Promise<{ id: string
               </button>
             ))}
           </div>
-          <Button variant="outline" onClick={() => setAttempt((a) => (a ? { ...a, section: "frq" } : a))}>
+          <Button variant="outline" onClick={() => setAttempt((a) => (a ? { ...a, section: "frq", frqEndsAt: Date.now() + ACTIVE_EXAM_PROFILE.frqMinutes * 60000 * extraFactor(extra) } : a))}>
             End MCQ section (early)
           </Button>
         </>
@@ -220,7 +222,7 @@ export default function MockWorkspace({ params }: { params: Promise<{ id: string
           <p className="text-sm">
             FRQ prompts are digital; write on paper if you wish. Typed work is accepted here. Upload completeness is your confirmation — we do not pretend a webcam watched you.
           </p>
-          {MOCK1_FRQS.map((f) => (
+          {(scramble ? [...MOCK1_FRQS].reverse() : MOCK1_FRQS).map((f) => (
             <section key={f.id} className="space-y-2 rounded-lg border p-3">
               <h2 className="font-heading text-lg">{f.category.replaceAll("_", " ")}</h2>
               {f.stimulus ? (
@@ -234,6 +236,8 @@ export default function MockWorkspace({ params }: { params: Promise<{ id: string
                 </p>
               ))}
               <Textarea
+                aria-label={`Response for ${f.category.replaceAll("_", " ")}`}
+                disabled={remainingFrq <= 0}
                 rows={6}
                 value={attempt.frqText[f.id] ?? ""}
                 onChange={(e) =>
@@ -242,7 +246,9 @@ export default function MockWorkspace({ params }: { params: Promise<{ id: string
               />
             </section>
           ))}
-          <Button onClick={submitAll}>Submit exam (MCQ keys released after this)</Button>
+          {remainingFrq <= 0 ? <p role="alert">FRQ time has expired. Submit your saved attempt.</p> : null}
+          {submitError ? <p role="alert">{submitError}</p> : null}
+          <Button disabled={submitting} onClick={submitAll}>Submit exam (MCQ keys released after this)</Button>
         </div>
       ) : null}
     </div>

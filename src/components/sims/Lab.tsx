@@ -359,6 +359,8 @@ export function useReduced() {
   const [sys, setSys] = useState(false);
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    // Initialize from the browser media query after hydration.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setSys(mq.matches);
   }, []);
   return sys || Boolean(state.profile?.accessibility.reducedMotion);
